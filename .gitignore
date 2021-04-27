@@ -1,4 +1,7 @@
 cache/
 static/
+conf/
 
 *.log
+
+.env
