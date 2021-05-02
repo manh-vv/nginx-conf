@@ -4,7 +4,10 @@ services:
     image: nginx:1.19.8
     container_name: nginx
     ports:
-      - 8888:80
+      - 80:80
+      - 443:443
+      - 8888:8888
+      - 8545:8545
     volumes:
       - ./templates:/etc/nginx/templates
       - ./conf:/etc/nginx/conf.d
@@ -13,4 +16,4 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
     environment:
       - APP_PROXY_URL
-
+      - ETHEREUM_PROXY_URL

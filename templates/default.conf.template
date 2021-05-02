@@ -1,6 +1,21 @@
 server {
-    listen       80;
-    listen  [::]:80;
+    listen       8545;
+    listen  [::]:8545;
+    server_name  localhost;
+
+    #charset koi8-r;
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass ${ETHEREUM_PROXY_URL};
+    }
+}
+
+server {
+    listen       8888;
+    listen  [::]:8888;
     server_name  localhost;
 
     #charset koi8-r;
@@ -11,16 +26,25 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_pass ${APP_PROXY_URL};
     }
+}
 
-    # location / {
-    #     # Simple requests
-    #     if ($request_method ~* "(GET|POST)") {
-    #         add_header "Access-Control-Allow-Origin"  *;
-    #     }
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
 
-    #     root   /usr/share/nginx/html;
-    #     index  index.html index.htm;
-    # }
+    #charset koi8-r;
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        # Simple requests
+        if ($request_method ~* "(GET|POST)") {
+            add_header "Access-Control-Allow-Origin"  *;
+        }
+
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
 
     #error_page  404              /404.html;
 
